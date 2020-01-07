@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { RadialMenu } from './radial-menu';
+import './app/app.css';
 
-const App: React.FC = () => {
+const log = (msg: string) => () => {
+  console.log(msg);
+};
+
+export const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RadialMenu
+      label="Shading"
+      items={[
+        { label: 'first', active: true, onClick: log('first') },
+        { label: 'second', onClick: log('second') },
+        { label: 'third', onClick: log('third') },
+        { label: 'fourth', onClick: log('fourth') },
+        { label: 'fifth', onClick: log('fifth') },
+      ]}
+    />
   );
-}
-
-export default App;
+};
