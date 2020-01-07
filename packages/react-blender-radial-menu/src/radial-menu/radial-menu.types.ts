@@ -22,6 +22,8 @@ export interface RadialMenuDisplayProps extends Common {
 }
 
 export interface RadialMenuProps extends Common {
+  /** The keyboard key to activate on. */
+  trigger: string;
   /** Called when the menu changes. */
   onChange: (value: string) => void;
 }

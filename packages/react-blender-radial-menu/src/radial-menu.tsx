@@ -8,18 +8,19 @@ import { cartesianToPolar } from './utils/coords';
 import { getClosestItem } from './radial-menu/radial-menu.utils';
 
 export const RadialMenu: React.FC<RadialMenuProps> = ({
+  trigger,
   onChange,
   items,
   active,
   label,
 }) => {
-  const [visible, hide] = useKeyboardTrigger('z', () => {
-    trigger();
+  const [visible, hide] = useKeyboardTrigger(trigger, () => {
+    triggerChange();
   });
 
   const center = useMemo(getMousePosition, [visible]);
 
-  const trigger = useCallback(() => {
+  const triggerChange = useCallback(() => {
     const mouse = getMousePosition();
     const polar = cartesianToPolar(center, mouse);
     const closest = getClosestItem(polar, items, CENTER_RADIUS_SQUARED);
@@ -35,7 +36,7 @@ export const RadialMenu: React.FC<RadialMenuProps> = ({
       const handleClick = (e: MouseEvent) => {
         e.stopImmediatePropagation();
         e.preventDefault();
-        trigger();
+        triggerChange();
       };
 
       document.addEventListener('click', handleClick, true);
@@ -43,7 +44,7 @@ export const RadialMenu: React.FC<RadialMenuProps> = ({
         document.removeEventListener('click', handleClick, true);
       };
     }
-  }, [visible, trigger]);
+  }, [visible, triggerChange]);
 
   if (!visible) {
     return null;

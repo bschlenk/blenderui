@@ -19,6 +19,7 @@ export const App: React.FC = () => {
         </span>
       )}
       <RadialMenu
+        trigger="z"
         label="Shading"
         items={['first', 'second', 'third', 'fourth', 'fifth'].map(v => ({
           label: v[0].toUpperCase() + v.substr(1),
