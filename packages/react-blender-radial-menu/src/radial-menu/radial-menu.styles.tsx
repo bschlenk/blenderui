@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components/macro';
 import { Point } from '../types';
+import { ANIMATION_DURATION } from './radial-menu.constants';
 
 const moveIn = (x: number, y: number) => keyframes`
   0% {
@@ -37,8 +38,8 @@ export const AbsolutePoint = styled(DivPoint)<{ center: Point }>`
 `;
 
 export const AnimatedAbsolutePoint = styled(AbsolutePoint)`
-  animation: ${props => moveIn(-1 * props.center[0], -1 * props.center[1])} 75ms
-    linear forwards;
+  animation: ${props => moveIn(-1 * props.center[0], -1 * props.center[1])}
+    ${ANIMATION_DURATION}ms linear forwards;
 `;
 
 export const Button = styled.button<{ hover?: boolean; active?: boolean }>`

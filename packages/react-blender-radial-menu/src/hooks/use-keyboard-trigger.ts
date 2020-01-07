@@ -4,17 +4,22 @@ const TIMEOUT = 300;
 
 export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
   const [active, setActive] = useState(false);
-  const timestamp = useRef<number>();
+  const timestamp = useRef<number>(0);
+  const down = useRef(false);
+
+  const deactivate = () => {
+    setActive(false);
+  };
 
   const handleKeydown = useCallback(
     (e: KeyboardEvent) => {
-      if (!active && e.key === key) {
+      if (!active && e.key === key && !down.current) {
         timestamp.current = Date.now();
+        down.current = true;
         return setActive(true);
       }
 
       if (e.key === 'Escape') {
-        timestamp.current = undefined;
         setActive(false);
       }
     },
@@ -23,13 +28,14 @@ export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
 
   const handleKeyup = useCallback(
     (e: KeyboardEvent) => {
-      if (active && e.key === key && timestamp.current) {
-        const delta = Date.now() - timestamp.current;
-        if (delta > TIMEOUT) {
-          onTrigger();
-          setActive(false);
-        } else {
-          timestamp.current = undefined;
+      if (e.key === key) {
+        down.current = false;
+        if (active) {
+          const delta = Date.now() - timestamp.current;
+          if (delta > TIMEOUT) {
+            onTrigger();
+            setActive(false);
+          }
         }
       }
     },
@@ -46,5 +52,5 @@ export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
     };
   }, [handleKeydown, handleKeyup]);
 
-  return active;
+  return [active, deactivate] as const;
 };

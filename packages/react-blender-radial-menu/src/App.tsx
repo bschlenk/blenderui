@@ -1,25 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RadialMenu } from './radial-menu';
-import { KeyboardActivator } from './keyboard-activator';
 import './app/app.css';
 
-const log = (msg: string) => () => {
-  console.log(msg);
-};
-
 export const App: React.FC = () => {
+  const [active, setActive] = useState<string>();
   return (
-    <KeyboardActivator char="z">
+    <>
+      {active && (
+        <span
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            color: 'white',
+          }}
+        >
+          Active item: {active}
+        </span>
+      )}
       <RadialMenu
         label="Shading"
-        items={[
-          { label: 'first', active: true, onClick: log('first') },
-          { label: 'second', onClick: log('second') },
-          { label: 'third', onClick: log('third') },
-          { label: 'fourth', onClick: log('fourth') },
-          { label: 'fifth', onClick: log('fifth') },
-        ]}
+        items={['first', 'second', 'third', 'fourth', 'fifth'].map(v => ({
+          label: v[0].toUpperCase() + v.substr(1),
+          value: v,
+        }))}
+        active={active}
+        onChange={value => {
+          setActive(value);
+        }}
       />
-    </KeyboardActivator>
+    </>
   );
 };

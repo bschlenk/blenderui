@@ -9,7 +9,7 @@ export interface Props {
  * Show a component on a keypress, and hide it on escape.
  */
 export const KeyboardActivator: React.FC<Props> = ({ char, children }) => {
-  const active = useKeyboardTrigger(char, () => {
+  const [active] = useKeyboardTrigger(char, () => {
     console.log('triggered!');
   });
 
