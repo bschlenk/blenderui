@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useMousePosition } from './hooks/use-mouse-position';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import {
   describeArc,
-  calcAngle,
   getCenterPointsAroundCircle,
   nearestAngle,
+  calcAngle,
 } from './utils/arc';
 import {
   AbsolutePoint,
   AnimatedAbsolutePoint,
   Button,
 } from './radial-menu/radial-menu.styles';
+import { getMousePosition } from './utils/get-mouse-position';
+import { useMouseAngle } from './hooks/use-mouse-angle';
 
 const CENTER_SIZE = 40;
 const CENTER_SIZE_HALF = CENTER_SIZE / 2;
@@ -37,63 +38,33 @@ interface Props {
  * @param props
  */
 export const RadialMenu: React.FC<Props> = ({ label, items }) => {
-  const mouse = useMousePosition();
-  const [location, setLocation] = useState<readonly [number, number]>();
+  const location = useMemo(getMousePosition, []);
+  const [angle, radiusSquared] = useMouseAngle(location);
 
   const handleClick = useCallback(
     (e: MouseEvent) => {
-      // figure out which one to click, call it's onClick, and close
-      if (!location) {
-        // can this happen?
-        return;
-      }
+      e.stopImmediatePropagation();
+      e.preventDefault();
 
-      const [x, y] = location;
-      const [mouseX, mouseY] = mouse;
-
-      const angle = calcAngle(x, y, mouseX, mouseY);
+      const angle = calcAngle(location, getMousePosition());
       const nearest = nearestAngle(angle, items.length);
-
       items[nearest].onClick();
-      setLocation(undefined);
-      document.removeEventListener('click', handleClick);
     },
-    [items, mouse, location],
-  );
-
-  const handleKeydown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setLocation(undefined);
-        document.removeEventListener('click', handleClick);
-      } else if (e.key === 'z' && !location) {
-        setLocation(mouse);
-        document.addEventListener('click', handleClick);
-      }
-    },
-    [handleClick, mouse, location],
+    [location, items],
   );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeydown, true);
+    document.addEventListener('click', handleClick, true);
     return () => {
-      document.removeEventListener('keydown', handleKeydown);
+      document.removeEventListener('click', handleClick);
     };
-  }, [handleKeydown]);
+  }, [handleClick]);
 
   const points = useMemo(() => getCenterPointsAroundCircle(items.length, 115), [
     items,
   ]);
 
-  if (!location) {
-    return null;
-  }
-
-  const [x, y] = location;
-
-  const angle = calcAngle(x, y, mouse[0], mouse[1]);
-  const mouseFromCenter = Math.pow(mouse[0] - x, 2) + Math.pow(mouse[1] - y, 2);
-  const isMouseFar = mouseFromCenter >= Math.pow(CENTER_SIZE_HALF - 3, 2);
+  const isMouseFar = radiusSquared >= Math.pow(CENTER_SIZE_HALF - 3, 2);
   const nearest = nearestAngle(angle, items.length);
 
   const pointThings = points.map(([x, y], i) => {
@@ -103,7 +74,7 @@ export const RadialMenu: React.FC<Props> = ({ label, items }) => {
     const activeItem = items[i];
 
     return (
-      <AnimatedAbsolutePoint key={i} left={left} top={top}>
+      <AnimatedAbsolutePoint key={i} center={[left, top]}>
         <Button active={activeItem.active} hover={hover}>
           {activeItem.label}
         </Button>
@@ -112,7 +83,7 @@ export const RadialMenu: React.FC<Props> = ({ label, items }) => {
   });
 
   return (
-    <AbsolutePoint left={x} top={y}>
+    <AbsolutePoint center={location}>
       <div style={{ position: 'absolute', top: '-30px', color: 'white' }}>
         {label}
       </div>
@@ -131,8 +102,7 @@ export const RadialMenu: React.FC<Props> = ({ label, items }) => {
             stroke="#405FA8"
             fill="none"
             d={describeArc(
-              CENTER_SIZE_HALF,
-              CENTER_SIZE_HALF,
+              [CENTER_SIZE_HALF, CENTER_SIZE_HALF],
               (CENTER_SIZE - 6) / 2,
               angle - 40,
               angle + 40,

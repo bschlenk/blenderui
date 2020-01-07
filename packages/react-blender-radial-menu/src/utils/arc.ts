@@ -48,7 +48,7 @@ export function describeArc(
 }
 
 export function calcAngle(start: Point, end: Point) {
-  const angle = 90 + radToDeg(Math.atan2(end[1] - start[0], end[1] - start[0]));
+  const angle = 90 + radToDeg(Math.atan2(end[1] - start[1], end[0] - start[0]));
   if (angle < 0) {
     return 360 + angle;
   }

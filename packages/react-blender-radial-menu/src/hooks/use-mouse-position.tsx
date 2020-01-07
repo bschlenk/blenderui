@@ -1,9 +1,10 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Point } from '../types';
+import { getMousePosition } from '../utils/get-mouse-position';
 
 export function useMousePosition(active?: boolean) {
   const track = active === undefined || active;
-  const [position, setPosition] = useState<Point>([0, 0]);
+  const [position, setPosition] = useState<Point>(getMousePosition());
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {

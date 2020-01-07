@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components/macro';
+import { Point } from '../types';
 
 const moveIn = (x: number, y: number) => keyframes`
   0% {
@@ -29,15 +30,15 @@ export const DivPoint = styled.div`
   }
 `;
 
-export const AbsolutePoint = styled(DivPoint)<{ top: number; left: number }>`
+export const AbsolutePoint = styled(DivPoint)<{ center: Point }>`
   position: absolute;
-  top: ${props => props.top}px;
-  left: ${props => props.left}px;
+  left: ${props => props.center[0]}px;
+  top: ${props => props.center[1]}px;
 `;
 
 export const AnimatedAbsolutePoint = styled(AbsolutePoint)`
-  animation: ${props => moveIn(-1 * props.left, -1 * props.top)} 75ms linear
-    forwards;
+  animation: ${props => moveIn(-1 * props.center[0], -1 * props.center[1])} 75ms
+    linear forwards;
 `;
 
 export const Button = styled.button<{ hover?: boolean; active?: boolean }>`
