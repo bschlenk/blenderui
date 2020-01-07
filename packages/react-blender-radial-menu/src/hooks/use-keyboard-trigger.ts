@@ -28,7 +28,7 @@ export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
 
   const handleKeyup = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === key) {
+      if (e.key === key && down.current) {
         down.current = false;
         if (active) {
           const delta = Date.now() - timestamp.current;
