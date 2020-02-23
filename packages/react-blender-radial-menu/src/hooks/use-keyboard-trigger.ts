@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 
 const TIMEOUT = 300;
 
-export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
+export const useKeyboardTrigger = (
+  key: string,
+  onTrigger: () => void,
+  timeout = TIMEOUT,
+) => {
   const [active, setActive] = useState(false);
   const timestamp = useRef<number>(0);
   const down = useRef(false);
@@ -32,14 +36,14 @@ export const useKeyboardTrigger = (key: string, onTrigger: () => void) => {
         down.current = false;
         if (active) {
           const delta = Date.now() - timestamp.current;
-          if (delta > TIMEOUT) {
+          if (delta > timeout) {
             onTrigger();
             setActive(false);
           }
         }
       }
     },
-    [key, active, onTrigger],
+    [key, active, onTrigger, timeout],
   );
 
   useEffect(() => {
