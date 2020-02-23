@@ -1,6 +1,6 @@
 import { Point } from '../types';
 import { degToRad, calcAngle } from './angle';
-import { distanceSquared } from './distance';
+import { distance } from './distance';
 
 export function polarToCartesian(
   center: Point,
@@ -16,7 +16,7 @@ export function polarToCartesian(
 }
 
 export function cartesianToPolar(center: Point, end: Point) {
-  const radiusSquared = distanceSquared(center, end);
+  const radius = distance(center, end);
   const angle = calcAngle(center, end);
-  return [radiusSquared, angle] as Point;
+  return [radius, angle] as Point;
 }

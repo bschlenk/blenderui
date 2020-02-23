@@ -3,7 +3,7 @@ import { useKeyboardTrigger } from './hooks/use-keyboard-trigger';
 import { getMousePosition } from './utils/mouse';
 import { RadialMenuProps } from './radial-menu/radial-menu.types';
 import { RadialMenuDisplay } from './radial-menu/radial-menu.display';
-import { CENTER_RADIUS_SQUARED } from './radial-menu/radial-menu.constants';
+import { CENTER_RADIUS } from './radial-menu/radial-menu.constants';
 import { cartesianToPolar } from './utils/coords';
 import { getClosestItem } from './radial-menu/radial-menu.utils';
 
@@ -23,7 +23,7 @@ export const RadialMenu: React.FC<RadialMenuProps> = ({
   const triggerChange = useCallback(() => {
     const mouse = getMousePosition();
     const polar = cartesianToPolar(center, mouse);
-    const closest = getClosestItem(polar, items, CENTER_RADIUS_SQUARED);
+    const closest = getClosestItem(polar, items, CENTER_RADIUS);
     if (closest && active !== closest.value) {
       // only change if the mouse is far enough
       onChange(closest.value);

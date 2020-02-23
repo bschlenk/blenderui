@@ -12,7 +12,6 @@ import {
   CENTER_RADIUS,
   MENU_RADIUS,
   CENTER_RING_WIDTH,
-  CENTER_RADIUS_SQUARED,
 } from './radial-menu.constants';
 import { getClosestItem } from './radial-menu.utils';
 
@@ -32,7 +31,7 @@ export const RadialMenuDisplay: React.FC<RadialMenuDisplayProps> = ({
   );
 
   const [, angle] = polar;
-  const closest = getClosestItem(polar, items, CENTER_RADIUS_SQUARED);
+  const closest = getClosestItem(polar, items, CENTER_RADIUS);
 
   const pointThings = points.map(([[x, y], item]) => {
     const top = -1 * y;
