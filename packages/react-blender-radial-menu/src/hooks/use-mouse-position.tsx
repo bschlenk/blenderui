@@ -5,18 +5,12 @@ import { getMousePosition } from '../utils/mouse';
 /**
  * Return the current mouse position, and update every time the mouse is moved.
  */
-export function useMousePosition(active?: boolean) {
-  const track = active === undefined || active;
+export function useMousePosition() {
   const [position, setPosition] = useState<Point>(getMousePosition());
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (track) {
-        setPosition([e.clientX, e.clientY]);
-      }
-    },
-    [track],
-  );
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setPosition([e.clientX, e.clientY]);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
