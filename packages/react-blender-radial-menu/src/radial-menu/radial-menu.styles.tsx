@@ -22,7 +22,14 @@ const moveIn = (x: number, y: number) => keyframes`
  * A single point to be positioned absolute. Contents will be centered around
  * the point.
  */
-export const DivPoint = styled.div`
+export const AbsolutePoint = styled.div.attrs<{ center: Point }>(p => ({
+  style: {
+    left: `${p.center[0]}px`,
+    top: `${p.center[1]}px`,
+  },
+}))<{ center: Point }>`
+  position: absolute;
+
   width: 0px;
   height: 0px;
 
@@ -31,14 +38,8 @@ export const DivPoint = styled.div`
   }
 `;
 
-export const AbsolutePoint = styled(DivPoint)<{ center: Point }>`
-  position: absolute;
-  left: ${props => props.center[0]}px;
-  top: ${props => props.center[1]}px;
-`;
-
 export const AnimatedAbsolutePoint = styled(AbsolutePoint)`
-  animation: ${props => moveIn(-1 * props.center[0], -1 * props.center[1])}
+  animation: ${p => moveIn(-1 * p.center[0], -1 * p.center[1])}
     ${ANIMATION_DURATION}ms linear forwards;
 `;
 
