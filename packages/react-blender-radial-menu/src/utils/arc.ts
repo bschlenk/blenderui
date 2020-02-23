@@ -1,18 +1,6 @@
 import { Point } from '../types';
 import { degToRad } from './angle';
-
-export function polarToCartesian(
-  center: Point,
-  radius: number,
-  angleInDegrees: number,
-) {
-  const angleInRadians = degToRad(angleInDegrees - 90);
-
-  return [
-    center[0] + radius * Math.cos(angleInRadians),
-    center[1] + radius * Math.sin(angleInRadians),
-  ] as Point;
-}
+import { polarToCartesian } from './coords';
 
 /**
  * Return the svg string describing the given arc.
