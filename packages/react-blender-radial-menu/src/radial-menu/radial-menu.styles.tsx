@@ -2,6 +2,12 @@ import styled, { keyframes } from 'styled-components/macro';
 import { Point } from '../types';
 import { ANIMATION_DURATION } from './radial-menu.constants';
 
+/**
+ * Animate *from* the given point to zero.
+ *
+ * @param x The x position to start from.
+ * @param y The y position to start from.
+ */
 const moveIn = (x: number, y: number) => keyframes`
   0% {
     transform: translate(${x}px, ${y}px);
@@ -38,6 +44,10 @@ export const AbsolutePoint = styled.div.attrs<{ center: Point }>(p => ({
   }
 `;
 
+/**
+ * An `AbsolutePoint` that will be animated into position from its relative
+ * [0, 0] point.
+ */
 export const AnimatedAbsolutePoint = styled(AbsolutePoint)`
   animation: ${p => moveIn(-1 * p.center[0], -1 * p.center[1])}
     ${ANIMATION_DURATION}ms linear forwards;

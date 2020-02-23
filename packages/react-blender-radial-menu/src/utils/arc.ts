@@ -14,6 +14,14 @@ export function polarToCartesian(
   ] as Point;
 }
 
+/**
+ * Return the svg string describing the given arc.
+ *
+ * @param center The center of the arc.
+ * @param radius The radius of the arc.
+ * @param startAngle The starting angle of the arc.
+ * @param endAngle The ending angle of the arc.
+ */
 export function describeArc(
   center: Point,
   radius: number,
@@ -40,6 +48,17 @@ export function describeArc(
   ].join(' ');
 }
 
+/**
+ * Arrange the given items evenly around a circle of the given radius, starting
+ * from directly above the circle's center. Assumes the circle center is at
+ * [0, 0]. Returns an array of pairs, where the first element is a `Point` and
+ * the second is the item from the `items` array.
+ *
+ * @param items The items to arrange in a circle.
+ * @param radius The radius of the circle.
+ *
+ * @return An array of tuples of point to item.
+ */
 export function getCenterPointsAroundCircle<T>(
   items: T[],
   radius: number,

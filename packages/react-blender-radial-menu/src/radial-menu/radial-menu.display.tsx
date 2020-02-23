@@ -17,8 +17,7 @@ import {
 import { getClosestItem } from './radial-menu.utils';
 
 /**
- * Should render options in a circle, starting from the top, evenly.
- * @param props
+ * Render options in a circle, starting from the top, evenly.
  */
 export const RadialMenuDisplay: React.FC<RadialMenuDisplayProps> = ({
   center,
