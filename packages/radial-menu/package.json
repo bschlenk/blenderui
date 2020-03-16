@@ -1,5 +1,5 @@
 {
-  "name": "react-blender-radial-menu",
+  "name": "@blenderui/radial-menu",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
