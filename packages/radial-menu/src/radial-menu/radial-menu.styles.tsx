@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components/macro';
+import styled, { keyframes } from 'styled-components';
 import { Point } from '../types';
 import { ANIMATION_DURATION } from './radial-menu.constants';
 
