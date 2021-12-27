@@ -1,8 +1,5 @@
 module.exports = {
-  stories: ['../packages/**/*.stories.tsx'],
-  addons: [
-    '@storybook/addon-actions',
-    '@storybook/addon-links',
-    '@storybook/preset-typescript',
-  ],
+  stories: ['../packages/**/*.stories.@(mdx|js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  framework: '@storybook/react',
 };
