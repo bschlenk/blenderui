@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -18,7 +19,7 @@
     "@types/styled-components": "^5.0.1",
     "babel-loader": "^8.0.6",
     "fork-ts-checker-webpack-plugin": "^4.1.0",
-    "husky": "^4.2.3",
+    "husky": "^7.0.4",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
@@ -27,16 +28,5 @@
     "styled-components": "^5.0.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.{json,md,js,ts,css,scss,html}": [
-      "prettier --write"
-    ]
   }
 }
