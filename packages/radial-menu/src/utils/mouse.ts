@@ -12,7 +12,7 @@ export function getMousePosition() {
   return [x, y] as Point;
 }
 
-document.addEventListener('mousemove', e => {
+document.addEventListener('mousemove', (e) => {
   x = e.clientX;
   y = e.clientY;
 });

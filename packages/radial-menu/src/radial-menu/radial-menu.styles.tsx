@@ -28,7 +28,7 @@ const moveIn = (x: number, y: number) => keyframes`
  * A single point to be positioned absolute. Contents will be centered around
  * the point.
  */
-export const AbsolutePoint = styled.div.attrs<{ center: Point }>(p => ({
+export const AbsolutePoint = styled.div.attrs<{ center: Point }>((p) => ({
   style: {
     left: `${p.center[0]}px`,
     top: `${p.center[1]}px`,
@@ -49,7 +49,7 @@ export const AbsolutePoint = styled.div.attrs<{ center: Point }>(p => ({
  * [0, 0] point.
  */
 export const AnimatedAbsolutePoint = styled(AbsolutePoint)`
-  animation: ${p => moveIn(-1 * p.center[0], -1 * p.center[1])}
+  animation: ${(p) => moveIn(-1 * p.center[0], -1 * p.center[1])}
     ${ANIMATION_DURATION}ms linear forwards;
 `;
 
@@ -57,7 +57,7 @@ export const Button = styled.button<{ hover?: boolean; active?: boolean }>`
   color: #ebedf3;
   cursor: pointer;
   white-space: nowrap;
-  background: ${props => {
+  background: ${(props) => {
     if (props.active) {
       return '#4262ac';
     }

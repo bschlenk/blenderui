@@ -8,7 +8,7 @@ export default {
   component: RadialMenu,
 };
 
-const Template: ComponentStory<typeof RadialMenu> = args => {
+const Template: ComponentStory<typeof RadialMenu> = (args) => {
   const [active, setActive] = React.useState<string | undefined>(undefined);
 
   return (
@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof RadialMenu> = args => {
       <p>Press {args.trigger} to trigger</p>
       <RadialMenu
         {...args}
-        onChange={val => {
+        onChange={(val) => {
           setActive(val);
           action('onChange')(val);
         }}
