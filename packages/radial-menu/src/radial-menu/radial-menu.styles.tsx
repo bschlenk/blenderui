@@ -59,18 +59,22 @@ export const Button = styled.button<{ hover?: boolean; active?: boolean }>`
   white-space: nowrap;
   background: ${(props) => {
     if (props.active) {
-      return '#4262ac';
+      return '#438fe6';
     }
     if (props.hover) {
-      return '#464646';
+      return '#545454';
     }
-    return '#1a1a1a';
+    return '#181818';
   }};
-  border-radius: 6px;
+  border: 1px solid #242424;
+  border-radius: 4px;
   position: absolute;
   padding: 8px;
+  text-shadow: 0px 0px 2px #242424;
 
-  border: none;
+  display: flex;
+  align-items: center;
+
   margin: 0;
   text-decoration: none;
   text-align: center;

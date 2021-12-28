@@ -56,14 +56,22 @@ export function RadialMenuDisplay({
           cx={CENTER_RADIUS}
           cy={CENTER_RADIUS}
           r={(CENTER_DIAMETER - CENTER_RING_WIDTH) / 2}
-          stroke="#1a1a1a"
+          stroke="#242424"
           strokeWidth={CENTER_RING_WIDTH}
+          fill="none"
+        />
+        <circle
+          cx={CENTER_RADIUS}
+          cy={CENTER_RADIUS}
+          r={(CENTER_DIAMETER - CENTER_RING_WIDTH) / 2}
+          stroke="#1a1a1a"
+          strokeWidth={CENTER_RING_WIDTH - 2}
           fill="none"
         />
         {closest && (
           <path
-            strokeWidth={CENTER_RING_WIDTH}
-            stroke="#405FA8"
+            strokeWidth={CENTER_RING_WIDTH - 2}
+            stroke="#438fe6"
             fill="none"
             d={describeArc(
               [CENTER_RADIUS, CENTER_RADIUS],
