@@ -46,6 +46,8 @@ export function RadialMenuDisplay({
     );
   });
 
+  const halfAngle = 360 / points.length / 2;
+
   return (
     <AbsolutePoint center={center}>
       <div style={{ position: 'absolute', top: '-30px', color: 'white' }}>
@@ -76,8 +78,8 @@ export function RadialMenuDisplay({
             d={describeArc(
               [CENTER_RADIUS, CENTER_RADIUS],
               (CENTER_DIAMETER - CENTER_RING_WIDTH) / 2,
-              angle - 40,
-              angle + 40,
+              angle - halfAngle,
+              angle + halfAngle,
             )}
           />
         )}
