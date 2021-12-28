@@ -17,11 +17,11 @@ const TIMEOUT = 300;
  * @return An array to be destructured. First value is whether this is currently
  *     active. The second is a function to manually deactivate.
  */
-export const useKeyboardTrigger = (
+export function useKeyboardTrigger(
   key: string,
   onTrigger: () => void,
   timeout = TIMEOUT,
-) => {
+) {
   const [active, setActive] = useState(false);
   const timestamp = useRef<number>(0);
   const down = useRef(false);
@@ -35,7 +35,8 @@ export const useKeyboardTrigger = (
       if (!active && e.key === key && !down.current) {
         timestamp.current = Date.now();
         down.current = true;
-        return setActive(true);
+        setActive(true);
+        return;
       }
 
       if (e.key === 'Escape') {
@@ -72,4 +73,4 @@ export const useKeyboardTrigger = (
   }, [handleKeydown, handleKeyup]);
 
   return [active, deactivate] as const;
-};
+}

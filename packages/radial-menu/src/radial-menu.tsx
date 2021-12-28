@@ -15,6 +15,8 @@ export const RadialMenu: React.FC<RadialMenuProps> = ({
   label,
 }) => {
   const [visible, hide] = useKeyboardTrigger(trigger, () => {
+    // This won't be called until after triggerChange has already been defined.
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     triggerChange();
   });
 
