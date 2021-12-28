@@ -15,15 +15,13 @@ import {
 } from './radial-menu.constants';
 import { getClosestItem } from './radial-menu.utils';
 
-/**
- * Render options in a circle, starting from the top, evenly.
- */
-export const RadialMenuDisplay: React.FC<RadialMenuDisplayProps> = ({
+/** Render options evenly around a circle, starting from the top. */
+export function RadialMenuDisplay({
   center,
   label,
   items,
   active,
-}) => {
+}: RadialMenuDisplayProps) {
   const polar = useMouseAngle(center);
   const points = useMemo(
     () => getCenterPointsAroundCircle(items, MENU_RADIUS),
@@ -79,4 +77,4 @@ export const RadialMenuDisplay: React.FC<RadialMenuDisplayProps> = ({
       {pointThings}
     </AbsolutePoint>
   );
-};
+}

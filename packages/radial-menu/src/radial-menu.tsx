@@ -7,13 +7,13 @@ import { CENTER_RADIUS } from './radial-menu/radial-menu.constants';
 import { cartesianToPolar } from './utils/coords';
 import { getClosestItem } from './radial-menu/radial-menu.utils';
 
-export const RadialMenu: React.FC<RadialMenuProps> = ({
+export function RadialMenu({
   trigger,
   onChange,
   items,
   active,
   label,
-}) => {
+}: RadialMenuProps) {
   const [visible, hide] = useKeyboardTrigger(trigger, () => {
     // This won't be called until after triggerChange has already been defined.
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -54,12 +54,10 @@ export const RadialMenu: React.FC<RadialMenuProps> = ({
 
   return (
     <RadialMenuDisplay
-      {...{
-        items,
-        active,
-        label,
-        center,
-      }}
+      items={items}
+      active={active}
+      label={label}
+      center={center}
     />
   );
-};
+}
