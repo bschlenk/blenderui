@@ -38,9 +38,11 @@ module.exports = {
 
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
+    'no-constant-condition': ['error', { checkLoops: false }],
     'prefer-arrow-callback': 'error',
 
     '@typescript-eslint/array-type': ['error', { default: 'array' }],
+    '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     '@typescript-eslint/prefer-optional-chain': 'error',
 
@@ -50,6 +52,13 @@ module.exports = {
   },
 
   overrides: [
+    {
+      files: '*.tsx',
+      rules: {
+        // annoying for styled components
+        '@typescript-eslint/no-use-before-define': 'off',
+      },
+    },
     {
       files: '*.stories.*',
       rules: {
