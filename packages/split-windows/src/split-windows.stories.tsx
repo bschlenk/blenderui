@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 import SplitWindows from '.';
 
@@ -10,11 +10,15 @@ export default {
   },
 };
 
-const Template: ComponentStory<typeof SplitWindows> = (args) => (
-  <div style={{ height: '100vh' }}>
-    <SplitWindows {...args} />
-  </div>
-);
+const Template: ComponentStory<typeof SplitWindows> = (args) => {
+  const [pane, setPane] = useState(args.pane);
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <SplitWindows pane={pane} onChange={setPane} />
+    </div>
+  );
+};
 
 export const Main = Template.bind({});
 Main.args = {
@@ -43,4 +47,4 @@ Main.args = {
 };
 
 export const One = Template.bind({});
-One.args = { component: <p>Hello</p> };
+One.args = { pane: { size: 100, component: <p>Hello</p> } };

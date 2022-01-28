@@ -7,6 +7,7 @@ import React, {
   useEffect,
 } from 'react';
 import styled from 'styled-components';
+import produce from 'immer';
 import { Point } from '../../utils/types';
 import { buildTreeCache, type TreeCache } from './split-windows.tree';
 import { Cursor, Direction, Pane, Region } from './split-windows.types';
@@ -14,6 +15,7 @@ import {
   checkRegion,
   cursorForRegion,
   directionForRegion,
+  getNode,
   isComponentPane,
   isEdgeRegion,
 } from './split-windows.utils';
@@ -43,6 +45,11 @@ export function SplitWindows({ pane, onResize, onChange }: SplitWindowsProps) {
 
   const [region, setRegion] = useState<Region | undefined>(undefined);
 
+  function updateMouseStart(e: MouseEvent) {
+    const { clientX, clientY } = e;
+    mouseStart.current = [clientX, clientY];
+  }
+
   const handleMouseMove = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       const el = nearestNode(e);
@@ -50,48 +57,55 @@ export function SplitWindows({ pane, onResize, onChange }: SplitWindowsProps) {
 
       const path = el.dataset.path;
 
-      if (resizing.current) {
-        let delta: number | undefined;
-
-        switch (region) {
-          case Region.TOP:
-          case Region.BOTTOM:
-            delta = e.clientY - mouseStart.current[1];
-            break;
-          case Region.LEFT:
-          case Region.RIGHT:
-            delta = e.clientX - mouseStart.current[0];
-            break;
-
-          // for corners, movement in any of the 4 cardinal directions triggers a different action
-          // but doesn't trigger until the mouse has moved past a threshold
-        }
-
-        if (delta != null) {
-          // prevent selecting text and stuff
-          e.preventDefault();
-          onResize(path, delta);
-
-          const [s1, s2, direction] = resizing.current;
-
-          const s1s = treeCache.current!.resize(s1, delta, direction);
-          const s2s = treeCache.current!.resize(s2, -1 * delta, direction);
-
-          console.log(s1s, s2s);
-        }
-
+      if (!resizing.current) {
+        const newRegion = checkRegion(el, e);
+        setRegion(newRegion);
         return;
       }
 
-      const newRegion = checkRegion(el, e);
-      setRegion(newRegion);
+      let delta: number | undefined;
+      const { clientX, clientY } = e;
+
+      switch (region) {
+        case Region.TOP:
+        case Region.BOTTOM:
+          delta = clientY - mouseStart.current[1];
+          break;
+        case Region.LEFT:
+        case Region.RIGHT:
+          delta = clientX - mouseStart.current[0];
+          break;
+
+        // for corners, movement in any of the 4 cardinal directions triggers a different action
+        // but doesn't trigger until the mouse has moved past a threshold
+      }
+
+      if (delta != null) {
+        updateMouseStart(e);
+
+        // prevent selecting text and stuff
+        e.preventDefault();
+        // onResize(path, delta);
+
+        const [s1, s2, direction] = resizing.current;
+
+        const s1s = treeCache.current!.resize(s1, delta, direction);
+        const s2s = treeCache.current!.resize(s2, -1 * delta, direction);
+
+        const newPane = produce(pane, (draft) => {
+          getNode(draft, s1).size = s1s;
+          getNode(draft, s2).size = s2s;
+        });
+
+        onChange(newPane);
+      }
     },
-    [onResize, region],
+    [onChange, pane, region],
   );
 
   const handleMouseDown = useCallback((e: MouseEvent<HTMLElement>) => {
     dragging.current = true;
-    mouseStart.current = [e.clientX, e.clientY];
+    updateMouseStart(e);
 
     const el = nearestNode(e);
     if (!el) return;
@@ -194,10 +208,11 @@ const WrapperInner = styled.div`
   height: 100%;
 `;
 
-const ComponentWrapper = styled.div<{ size: number }>`
+const ComponentWrapper = styled.div.attrs<{ size: number }>((p) => ({
+  style: { flex: `0 0 ${p.size}%` },
+}))`
   background: #161616;
   padding: 2px;
-  flex: 0 0 ${(p) => p.size}%;
   display: flex;
   overflow: hidden;
 `;
